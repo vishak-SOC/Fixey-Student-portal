@@ -1,0 +1,35 @@
+# --- Private notes and module material (not part of the app) ---
+PLAN.md
+RESEARCH_NOTES.md
+lecture-slides/
+*.pdf
+*.docx
+
+# --- Secrets ---
+# .env holds the real SECRET_KEY, it must never be uploaded
+.env
+
+# --- Database ---
+instance/
+*.db
+*.sqlite3
+
+# --- Python ---
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Editor / Mac files ---
+.vscode/
+.idea/
+.DS_Store
+
+# --- Videos (the demo goes on YouTube, not GitHub) ---
+*.mp4
+*.mov
