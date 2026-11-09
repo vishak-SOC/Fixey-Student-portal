@@ -41,9 +41,41 @@ I'm building it for the **Secure Web Development** module (MSc in Cybersecurity,
 - SQLite (through Flask-SQLAlchemy)
 - HTML, Jinja templates and CSS
 
-## Setup
+## Setup and installation
 
-Setup instructions will be added once the first version runs.
+You need **Python 3** and **Git** installed.
+
+1. Clone the repository and go into the folder:
+   ```bash
+   git clone https://github.com/vishak-SOC/Fixey-Student-portal.git
+   cd Fixey-Student-portal
+   ```
+
+2. Create a virtual environment and install the packages:
+   ```bash
+   python3 -m venv venv
+   venv/bin/pip install -r requirements.txt
+   ```
+   (On Windows use `venv\Scripts\pip` instead of `venv/bin/pip`.)
+
+3. Create your own `.env` file from the example:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Make a secret key and paste it into `.env` in place of `change-me`:
+   ```bash
+   python3 -c "import secrets; print(secrets.token_hex(32))"
+   ```
+   The app will not start if the key is missing or still set to `change-me`.
+
+5. Run the app:
+   ```bash
+   venv/bin/python run.py
+   ```
+   Then open **http://127.0.0.1:5000** in your browser. Press `Ctrl + C` to stop it.
+
+> **Mac users:** if the page doesn't load, AirPlay Receiver might be using port 5000. Use `127.0.0.1` instead of `localhost`, or turn AirPlay Receiver off in System Settings.
 
 ## Author
 
