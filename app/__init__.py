@@ -8,7 +8,7 @@ def create_app():
     app.config.from_object(Config)
 
     if not app.config["SECRET_KEY"] or app.config["SECRET_KEY"] == "change-me":
-        raise RuntimeError("SECRET_KEY is missing. Copy .env.example to .env and set a real key.")
+        raise RuntimeError("SECRET_KEY not set in .env")
 
     db.init_app(app)
     with app.app_context():
