@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<h1>Register</h1>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    {% for field in [form.username, form.email, form.room_number, form.password, form.confirm] %}
+    <div class="field">
+        {{ field.label }}
+        {{ field() }}
+        {% for error in field.errors %}
+        <p class="error">{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <p class="hint">Password: at least 8 characters, with uppercase, lowercase and a number.</p>
+
+    {{ form.submit(class="btn") }}
+</form>
+{% endblock %}

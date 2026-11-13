@@ -44,3 +44,52 @@ footer {
     font-size: 14px;
     padding: 20px;
 }
+
+.flash {
+    background: #e2f0d9;
+    border: 1px solid #a9d18e;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.field input {
+    width: 100%;
+    max-width: 350px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.error {
+    color: #c00000;
+    font-size: 14px;
+    margin: 5px 0 0;
+}
+
+.hint {
+    color: #666;
+    font-size: 14px;
+}
+
+.btn {
+    background: #1f4e79;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #163a5a;
+}
