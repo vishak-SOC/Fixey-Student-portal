@@ -40,3 +40,9 @@ class RegisterForm(FlaskForm):
         EqualTo("password", message="Passwords do not match."),
     ])
     submit = SubmitField("Register")
+
+
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired(), Length(max=30)])
+    password = PasswordField("Password", validators=[DataRequired(), Length(max=64)])
+    submit = SubmitField("Login")
