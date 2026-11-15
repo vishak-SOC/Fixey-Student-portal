@@ -54,6 +54,7 @@ def login():
         if user and user.is_active and bcrypt.checkpw(form.password.data.encode(), user.password_hash.encode()):
             session.clear()
             login_user(user)
+            session.permanent = True
             flash("Logged in.")
             return redirect(url_for("main.home"))
 
