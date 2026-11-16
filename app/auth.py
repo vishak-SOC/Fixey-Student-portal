@@ -50,8 +50,9 @@ def login():
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data.strip()).first()
+        password = form.password.data.encode()
 
-        if user and user.is_active and bcrypt.checkpw(form.password.data.encode(), user.password_hash.encode()):
+        if user and user.is_active and bcrypt.checkpw(password, user.password_hash.encode()):
             session.clear()
             login_user(user)
             session.permanent = True
