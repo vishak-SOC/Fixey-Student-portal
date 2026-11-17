@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from .config import Config
@@ -33,5 +33,9 @@ def create_app():
     from .auth import auth
     app.register_blueprint(main)
     app.register_blueprint(auth)
+
+    @app.errorhandler(403)
+    def forbidden(e):
+        return render_template("403.html"), 403
 
     return app

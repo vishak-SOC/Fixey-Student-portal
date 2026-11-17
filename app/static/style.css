@@ -117,3 +117,19 @@ footer {
 .btn:hover {
     background: #163a5a;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #f0f3f6;
+}

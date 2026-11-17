@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Warden{% endblock %}
+
+{% block content %}
+<h1>Warden</h1>
+
+<h2>Users</h2>
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Joined</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.created_at.strftime("%d %b %Y") }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

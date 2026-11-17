@@ -12,6 +12,9 @@
         <nav>
             <a href="{{ url_for('main.home') }}">Home</a>
             {% if current_user.is_authenticated %}
+            {% if current_user.role == "warden" %}
+            <a href="{{ url_for('main.warden') }}">Warden</a>
+            {% endif %}
             <span>{{ current_user.username }}</span>
             <form action="{{ url_for('auth.logout') }}" method="POST" class="logout">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
