@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}My requests{% endblock %}
+
+{% block content %}
+<h1>My requests</h1>
+
+<p><a class="btn" href="{{ url_for('repairs.new_request') }}">New request</a></p>
+
+{% if reqs %}
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Sent</th>
+    </tr>
+    {% for req in reqs %}
+    <tr>
+        <td><a href="{{ url_for('repairs.view_request', id=req.id) }}">{{ req.title }}</a></td>
+        <td>{{ req.category }}</td>
+        <td><span class="status {{ req.status }}">{{ req.status }}</span></td>
+        <td>{{ req.created_at.strftime("%d %b %Y") }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No requests yet.</p>
+{% endif %}
+{% endblock %}

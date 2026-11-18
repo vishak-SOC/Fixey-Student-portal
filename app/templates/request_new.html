@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}New request{% endblock %}
+
+{% block content %}
+<h1>New request</h1>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    {% for field in [form.title, form.category, form.description] %}
+    <div class="field">
+        {{ field.label }}
+        {{ field() }}
+        {% for error in field.errors %}
+        <p class="error">{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <div class="field check">
+        {{ form.entry_permission() }} {{ form.entry_permission.label }}
+    </div>
+
+    <p class="hint">Room: {{ current_user.room_number }}</p>
+
+    {{ form.submit(class="btn") }}
+</form>
+{% endblock %}

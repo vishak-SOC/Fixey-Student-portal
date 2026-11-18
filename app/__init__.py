@@ -31,8 +31,10 @@ def create_app():
 
     from .routes import main
     from .auth import auth
+    from .repairs import repairs
     app.register_blueprint(main)
     app.register_blueprint(auth)
+    app.register_blueprint(repairs)
 
     @app.errorhandler(403)
     def forbidden(e):

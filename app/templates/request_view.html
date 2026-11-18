@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Request{% endblock %}
+
+{% block content %}
+<h1>{{ req.title }}</h1>
+
+<p><span class="status {{ req.status }}">{{ req.status }}</span></p>
+
+<table>
+    <tr><th>Category</th><td>{{ req.category }}</td></tr>
+    <tr><th>Room</th><td>{{ req.room_number }}</td></tr>
+    <tr><th>Staff can enter</th><td>{{ "Yes" if req.entry_permission else "No" }}</td></tr>
+    <tr><th>Priority</th><td>{{ req.priority }}</td></tr>
+    <tr><th>Sent</th><td>{{ req.created_at.strftime("%d %b %Y %H:%M") }}</td></tr>
+</table>
+
+<h2>Description</h2>
+<p>{{ req.description }}</p>
+
+{% if current_user.role == "student" %}
+<p><a href="{{ url_for('repairs.my_requests') }}">Back to my requests</a></p>
+{% endif %}
+{% endblock %}

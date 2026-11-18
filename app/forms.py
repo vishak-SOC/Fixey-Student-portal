@@ -1,6 +1,7 @@
 import re
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
+from wtforms import SelectField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired, Length, Regexp, EqualTo, ValidationError
 
 
@@ -46,3 +47,17 @@ class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(max=30)])
     password = PasswordField("Password", validators=[DataRequired(), Length(max=64)])
     submit = SubmitField("Login")
+
+
+CATEGORIES = ["Heating", "Plumbing", "Electrical", "Wi-Fi", "Furniture", "Other"]
+
+
+class RequestForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired(), Length(min=3, max=100)])
+    category = SelectField("Category", choices=CATEGORIES)
+    description = TextAreaField("Description", validators=[
+        DataRequired(),
+        Length(min=10, max=1000),
+    ])
+    entry_permission = BooleanField("Staff can enter my room if I am not there")
+    submit = SubmitField("Send request")

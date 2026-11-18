@@ -133,3 +133,54 @@ th, td {
 th {
     background: #f0f3f6;
 }
+
+.field select,
+.field textarea {
+    width: 100%;
+    max-width: 350px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.field textarea {
+    height: 100px;
+}
+
+.check input {
+    width: auto;
+}
+
+.check label {
+    display: inline;
+    font-weight: normal;
+}
+
+a.btn {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.status {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    background: #eee;
+}
+
+.status.new {
+    background: #ddebf7;
+}
+
+.status.assigned,
+.status.in_progress {
+    background: #fff2cc;
+}
+
+.status.fixed {
+    background: #e2f0d9;
+}
+
+.status.cancelled {
+    background: #f2dcdb;
+}

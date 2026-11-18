@@ -1,0 +1,59 @@
+from flask import Blueprint, render_template, redirect, url_for, flash, abort
+from flask_login import login_required, current_user
+from .models import db, RepairRequest
+from .forms import RequestForm
+from .roles import role_required
+
+repairs = Blueprint("repairs", __name__)
+
+
+def can_view(req):
+    if current_user.role == "warden":
+        return True
+    if current_user.role == "worker":
+        return req.worker_id == current_user.id
+    return req.student_id == current_user.id
+
+
+@repairs.route("/requests")
+@login_required
+@role_required("student")
+def my_requests():
+    reqs = RepairRequest.query.filter_by(student_id=current_user.id)
+    reqs = reqs.order_by(RepairRequest.created_at.desc()).all()
+    return render_template("requests.html", reqs=reqs)
+
+
+@repairs.route("/requests/new", methods=["GET", "POST"])
+@login_required
+@role_required("student")
+def new_request():
+    form = RequestForm()
+
+    if form.validate_on_submit():
+        req = RepairRequest(
+            title=form.title.data.strip(),
+            category=form.category.data,
+            description=form.description.data.strip(),
+            room_number=current_user.room_number,
+            entry_permission=form.entry_permission.data,
+            student_id=current_user.id,
+        )
+        db.session.add(req)
+        db.session.commit()
+
+        flash("Request sent.")
+        return redirect(url_for("repairs.view_request", id=req.id))
+
+    return render_template("request_new.html", form=form)
+
+
+@repairs.route("/requests/<int:id>")
+@login_required
+def view_request(id):
+    req = db.get_or_404(RepairRequest, id)
+
+    if not can_view(req):
+        abort(403)
+
+    return render_template("request_view.html", req=req)
