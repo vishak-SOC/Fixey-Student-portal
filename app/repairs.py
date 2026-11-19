@@ -57,3 +57,53 @@ def view_request(id):
         abort(403)
 
     return render_template("request_view.html", req=req)
+
+
+def get_own_new_request(id):
+    req = db.get_or_404(RepairRequest, id)
+
+    if req.student_id != current_user.id:
+        abort(403)
+    if req.status != "new":
+        flash("This request can no longer be changed.")
+        return None
+
+    return req
+
+
+@repairs.route("/requests/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+@role_required("student")
+def edit_request(id):
+    req = get_own_new_request(id)
+    if req is None:
+        return redirect(url_for("repairs.view_request", id=id))
+
+    form = RequestForm(obj=req)
+
+    if form.validate_on_submit():
+        req.title = form.title.data.strip()
+        req.category = form.category.data
+        req.description = form.description.data.strip()
+        req.entry_permission = form.entry_permission.data
+        db.session.commit()
+
+        flash("Request updated.")
+        return redirect(url_for("repairs.view_request", id=req.id))
+
+    return render_template("request_edit.html", form=form, req=req)
+
+
+@repairs.route("/requests/<int:id>/cancel", methods=["POST"])
+@login_required
+@role_required("student")
+def cancel_request(id):
+    req = get_own_new_request(id)
+    if req is None:
+        return redirect(url_for("repairs.view_request", id=id))
+
+    req.status = "cancelled"
+    db.session.commit()
+
+    flash("Request cancelled.")
+    return redirect(url_for("repairs.my_requests"))

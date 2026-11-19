@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Edit request{% endblock %}
+
+{% block content %}
+<h1>Edit request</h1>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    {% for field in [form.title, form.category, form.description] %}
+    <div class="field">
+        {{ field.label }}
+        {{ field() }}
+        {% for error in field.errors %}
+        <p class="error">{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <div class="field check">
+        {{ form.entry_permission() }} {{ form.entry_permission.label }}
+    </div>
+
+    {{ form.submit(class="btn", value="Save changes") }}
+</form>
+
+<p><a href="{{ url_for('repairs.view_request', id=req.id) }}">Back</a></p>
+{% endblock %}

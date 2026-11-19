@@ -108,6 +108,7 @@ footer {
 .btn {
     background: #1f4e79;
     color: white;
+    font-size: 14px;
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
@@ -183,4 +184,18 @@ a.btn {
 
 .status.cancelled {
     background: #f2dcdb;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.btn.red {
+    background: #c00000;
+}
+
+.btn.red:hover {
+    background: #900000;
 }

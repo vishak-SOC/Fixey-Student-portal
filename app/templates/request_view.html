@@ -18,6 +18,16 @@
 <h2>Description</h2>
 <p>{{ req.description }}</p>
 
+{% if current_user.id == req.student_id and req.status == "new" %}
+<div class="actions">
+    <a class="btn" href="{{ url_for('repairs.edit_request', id=req.id) }}">Edit</a>
+    <form action="{{ url_for('repairs.cancel_request', id=req.id) }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn red">Cancel request</button>
+    </form>
+</div>
+{% endif %}
+
 {% if current_user.role == "student" %}
 <p><a href="{{ url_for('repairs.my_requests') }}">Back to my requests</a></p>
 {% endif %}
