@@ -36,6 +36,8 @@ class RepairRequest(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
+    comments = db.relationship("Comment", order_by="Comment.created_at")
+
 
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -45,6 +47,8 @@ class Comment(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     text = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
+
+    author = db.relationship("User")
 
 
 class AuditLog(db.Model):

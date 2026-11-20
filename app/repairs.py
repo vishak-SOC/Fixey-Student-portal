@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
-from .models import db, RepairRequest
-from .forms import RequestForm
+from .models import db, RepairRequest, Comment
+from .forms import RequestForm, CommentForm
 from .roles import role_required
 
 repairs = Blueprint("repairs", __name__)
@@ -56,7 +56,7 @@ def view_request(id):
     if not can_view(req):
         abort(403)
 
-    return render_template("request_view.html", req=req)
+    return render_template("request_view.html", req=req, form=CommentForm())
 
 
 def get_own_new_request(id):
@@ -107,3 +107,27 @@ def cancel_request(id):
 
     flash("Request cancelled.")
     return redirect(url_for("repairs.my_requests"))
+
+
+@repairs.route("/requests/<int:id>/comment", methods=["POST"])
+@login_required
+def add_comment(id):
+    req = db.get_or_404(RepairRequest, id)
+
+    if not can_view(req):
+        abort(403)
+    if req.status == "cancelled":
+        flash("This request is cancelled.")
+        return redirect(url_for("repairs.view_request", id=id))
+
+    form = CommentForm()
+
+    if form.validate_on_submit():
+        comment = Comment(request_id=req.id, author_id=current_user.id, text=form.text.data.strip())
+        db.session.add(comment)
+        db.session.commit()
+        flash("Comment added.")
+    else:
+        flash("Comment must be 1 to 500 characters.")
+
+    return redirect(url_for("repairs.view_request", id=id))

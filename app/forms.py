@@ -61,3 +61,8 @@ class RequestForm(FlaskForm):
     ])
     entry_permission = BooleanField("Staff can enter my room if I am not there")
     submit = SubmitField("Send request")
+
+
+class CommentForm(FlaskForm):
+    text = TextAreaField("Comment", validators=[DataRequired(), Length(max=500)])
+    submit = SubmitField("Add comment")

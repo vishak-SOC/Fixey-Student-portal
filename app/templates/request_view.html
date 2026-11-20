@@ -28,6 +28,31 @@
 </div>
 {% endif %}
 
+<h2>Comments</h2>
+
+{% for comment in req.comments %}
+<div class="comment">
+    <p class="meta">
+        <strong>{{ comment.author.username }}</strong> ({{ comment.author.role }})
+        - {{ comment.created_at.strftime("%d %b %Y %H:%M") }}
+    </p>
+    <p>{{ comment.text }}</p>
+</div>
+{% else %}
+<p>No comments yet.</p>
+{% endfor %}
+
+{% if req.status != "cancelled" %}
+<form action="{{ url_for('repairs.add_comment', id=req.id) }}" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="field">
+        {{ form.text.label }}
+        {{ form.text() }}
+    </div>
+    {{ form.submit(class="btn") }}
+</form>
+{% endif %}
+
 {% if current_user.role == "student" %}
 <p><a href="{{ url_for('repairs.my_requests') }}">Back to my requests</a></p>
 {% endif %}
