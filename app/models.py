@@ -36,6 +36,8 @@ class RepairRequest(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
+    student = db.relationship("User", foreign_keys=[student_id])
+    worker = db.relationship("User", foreign_keys=[worker_id])
     comments = db.relationship("Comment", order_by="Comment.created_at")
 
 

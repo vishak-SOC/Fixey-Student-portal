@@ -68,7 +68,13 @@ You need Python 3 and Git.
    python3 -c "import secrets; print(secrets.token_hex(32))"
    ```
 
-5. Run the app
+5. Create demo accounts (warden, worker1, worker2, student1, student2)
+   ```bash
+   venv/bin/python seed.py
+   ```
+   It asks for one password that all demo accounts will use.
+
+6. Run the app
    ```bash
    venv/bin/python run.py
    ```

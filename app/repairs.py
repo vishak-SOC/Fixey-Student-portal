@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
-from .models import db, RepairRequest, Comment
-from .forms import RequestForm, CommentForm
+from .models import db, User, RepairRequest, Comment
+from .forms import RequestForm, CommentForm, AssignForm
 from .roles import role_required
 
 repairs = Blueprint("repairs", __name__)
@@ -56,7 +56,18 @@ def view_request(id):
     if not can_view(req):
         abort(403)
 
-    return render_template("request_view.html", req=req, form=CommentForm())
+    assign_form = None
+    if current_user.role == "warden":
+        assign_form = AssignForm(priority=req.priority, worker_id=req.worker_id or 0)
+        assign_form.worker_id.choices = worker_choices()
+
+    form = CommentForm()
+    return render_template("request_view.html", req=req, form=form, assign_form=assign_form)
+
+
+def worker_choices():
+    workers = User.query.filter_by(role="worker", is_active=True).order_by(User.username).all()
+    return [(0, "Not assigned")] + [(w.id, w.username) for w in workers]
 
 
 def get_own_new_request(id):
@@ -129,5 +140,35 @@ def add_comment(id):
         flash("Comment added.")
     else:
         flash("Comment must be 1 to 500 characters.")
+
+    return redirect(url_for("repairs.view_request", id=id))
+
+
+@repairs.route("/requests/<int:id>/assign", methods=["POST"])
+@login_required
+@role_required("warden")
+def assign_request(id):
+    req = db.get_or_404(RepairRequest, id)
+
+    if req.status in ["cancelled", "fixed"]:
+        flash("This request is closed.")
+        return redirect(url_for("repairs.view_request", id=id))
+
+    form = AssignForm()
+    form.worker_id.choices = worker_choices()
+
+    if form.validate_on_submit():
+        req.priority = form.priority.data
+        if form.worker_id.data == 0:
+            req.worker_id = None
+            req.status = "new"
+        else:
+            req.worker_id = form.worker_id.data
+            if req.status == "new":
+                req.status = "assigned"
+        db.session.commit()
+        flash("Request updated.")
+    else:
+        flash("Invalid choice.")
 
     return redirect(url_for("repairs.view_request", id=id))

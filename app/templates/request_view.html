@@ -12,6 +12,7 @@
     <tr><th>Room</th><td>{{ req.room_number }}</td></tr>
     <tr><th>Staff can enter</th><td>{{ "Yes" if req.entry_permission else "No" }}</td></tr>
     <tr><th>Priority</th><td>{{ req.priority }}</td></tr>
+    <tr><th>Worker</th><td>{{ req.worker.username if req.worker else "Not assigned" }}</td></tr>
     <tr><th>Sent</th><td>{{ req.created_at.strftime("%d %b %Y %H:%M") }}</td></tr>
 </table>
 
@@ -24,6 +25,24 @@
     <form action="{{ url_for('repairs.cancel_request', id=req.id) }}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button type="submit" class="btn red">Cancel request</button>
+    </form>
+</div>
+{% endif %}
+
+{% if assign_form and req.status not in ["cancelled", "fixed"] %}
+<div class="box">
+    <h2>Assign</h2>
+    <form action="{{ url_for('repairs.assign_request', id=req.id) }}" method="POST" novalidate>
+        {{ assign_form.hidden_tag() }}
+        <div class="field">
+            {{ assign_form.priority.label }}
+            {{ assign_form.priority() }}
+        </div>
+        <div class="field">
+            {{ assign_form.worker_id.label }}
+            {{ assign_form.worker_id() }}
+        </div>
+        {{ assign_form.submit(class="btn") }}
     </form>
 </div>
 {% endif %}

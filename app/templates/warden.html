@@ -5,6 +5,32 @@
 {% block content %}
 <h1>Warden</h1>
 
+<h2>All requests</h2>
+{% if reqs %}
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Student</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Worker</th>
+        <th>Sent</th>
+    </tr>
+    {% for req in reqs %}
+    <tr>
+        <td><a href="{{ url_for('repairs.view_request', id=req.id) }}">{{ req.title }}</a></td>
+        <td>{{ req.student.username }}</td>
+        <td><span class="status {{ req.status }}">{{ req.status }}</span></td>
+        <td>{{ req.priority }}</td>
+        <td>{{ req.worker.username if req.worker else "-" }}</td>
+        <td>{{ req.created_at.strftime("%d %b %Y") }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No requests yet.</p>
+{% endif %}
+
 <h2>Users</h2>
 <table>
     <tr>

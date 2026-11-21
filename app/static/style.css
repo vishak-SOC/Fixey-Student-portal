@@ -215,3 +215,11 @@ a.btn {
     color: #666;
     font-size: 13px;
 }
+
+.box {
+    background: #f7f9fb;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 20px 20px;
+    margin: 20px 0;
+}

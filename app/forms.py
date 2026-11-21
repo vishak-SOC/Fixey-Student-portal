@@ -66,3 +66,12 @@ class RequestForm(FlaskForm):
 class CommentForm(FlaskForm):
     text = TextAreaField("Comment", validators=[DataRequired(), Length(max=500)])
     submit = SubmitField("Add comment")
+
+
+PRIORITIES = ["low", "normal", "high", "urgent"]
+
+
+class AssignForm(FlaskForm):
+    priority = SelectField("Priority", choices=PRIORITIES)
+    worker_id = SelectField("Worker", coerce=int)
+    submit = SubmitField("Save")
